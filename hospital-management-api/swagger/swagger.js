@@ -1,7 +1,8 @@
-const swaggerAutogen = require('swagger-autogen')();
+const swaggerAutogen = require('swagger-autogen')({
+    openapi: '3.0.0'
+});
 
 const doc = {
-    openapi: '3.0.0',
 
     info: {
         title: 'Hospital Management API',
@@ -406,7 +407,9 @@ const doc = {
     }
 };
 
-const outputFile = './swagger-output.json';
+const path = require('path');
+
+const outputFile = path.join(__dirname, '..', 'swagger-output.json');
 
 const endpointsFiles = [
     './server.js',
