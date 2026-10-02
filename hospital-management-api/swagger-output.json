@@ -1,0 +1,1067 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Hospital Management API",
+    "description": "CSE 341 Final Project API for managing patients, doctors, appointments, medical records, and user authentication.",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Patients",
+      "description": "Patient management endpoints"
+    },
+    {
+      "name": "Doctors",
+      "description": "Doctor management endpoints"
+    },
+    {
+      "name": "Appointments",
+      "description": "Appointment management endpoints"
+    },
+    {
+      "name": "Medical Records",
+      "description": "Medical record management endpoints"
+    },
+    {
+      "name": "Authentication",
+      "description": "Authentication and user management endpoints"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "patientId": {
+                  "example": "any"
+                },
+                "doctorId": {
+                  "example": "any"
+                },
+                "diagnosis": {
+                  "example": "any"
+                },
+                "symptoms": {
+                  "example": "any"
+                },
+                "treatment": {
+                  "example": "any"
+                },
+                "medications": {
+                  "example": "any"
+                },
+                "notes": {
+                  "example": "any"
+                },
+                "recordDate": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/patients/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "example": "any"
+                },
+                "lastName": {
+                  "example": "any"
+                },
+                "age": {
+                  "example": "any"
+                },
+                "gender": {
+                  "example": "any"
+                },
+                "phone": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "address": {
+                  "example": "any"
+                },
+                "emergencyContact": {
+                  "example": "any"
+                },
+                "diagnosis": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/patients/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "example": "any"
+                },
+                "lastName": {
+                  "example": "any"
+                },
+                "age": {
+                  "example": "any"
+                },
+                "gender": {
+                  "example": "any"
+                },
+                "phone": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "address": {
+                  "example": "any"
+                },
+                "emergencyContact": {
+                  "example": "any"
+                },
+                "diagnosis": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/doctors/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "example": "any"
+                },
+                "lastName": {
+                  "example": "any"
+                },
+                "specialization": {
+                  "example": "any"
+                },
+                "phone": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "department": {
+                  "example": "any"
+                },
+                "licenseNumber": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/doctors/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "example": "any"
+                },
+                "lastName": {
+                  "example": "any"
+                },
+                "specialization": {
+                  "example": "any"
+                },
+                "phone": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "department": {
+                  "example": "any"
+                },
+                "licenseNumber": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/appointments/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "patientId": {
+                  "example": "any"
+                },
+                "doctorId": {
+                  "example": "any"
+                },
+                "appointmentDate": {
+                  "example": "any"
+                },
+                "appointmentTime": {
+                  "example": "any"
+                },
+                "reason": {
+                  "example": "any"
+                },
+                "status": {
+                  "example": "any"
+                },
+                "notes": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/appointments/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "patientId": {
+                  "example": "any"
+                },
+                "doctorId": {
+                  "example": "any"
+                },
+                "appointmentDate": {
+                  "example": "any"
+                },
+                "appointmentTime": {
+                  "example": "any"
+                },
+                "reason": {
+                  "example": "any"
+                },
+                "status": {
+                  "example": "any"
+                },
+                "notes": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/medical-records/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "patientId": {
+                  "example": "any"
+                },
+                "doctorId": {
+                  "example": "any"
+                },
+                "diagnosis": {
+                  "example": "any"
+                },
+                "symptoms": {
+                  "example": "any"
+                },
+                "treatment": {
+                  "example": "any"
+                },
+                "medications": {
+                  "example": "any"
+                },
+                "notes": {
+                  "example": "any"
+                },
+                "recordDate": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/medical-records/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "patientId": {
+                  "example": "any"
+                },
+                "doctorId": {
+                  "example": "any"
+                },
+                "diagnosis": {
+                  "example": "any"
+                },
+                "symptoms": {
+                  "example": "any"
+                },
+                "treatment": {
+                  "example": "any"
+                },
+                "medications": {
+                  "example": "any"
+                },
+                "notes": {
+                  "example": "any"
+                },
+                "recordDate": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "patientId": {
+                  "example": "any"
+                },
+                "doctorId": {
+                  "example": "any"
+                },
+                "diagnosis": {
+                  "example": "any"
+                },
+                "symptoms": {
+                  "example": "any"
+                },
+                "treatment": {
+                  "example": "any"
+                },
+                "medications": {
+                  "example": "any"
+                },
+                "notes": {
+                  "example": "any"
+                },
+                "recordDate": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Patient": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "example": "John"
+        },
+        "lastName": {
+          "type": "string",
+          "example": "Doe"
+        },
+        "age": {
+          "type": "number",
+          "example": 35
+        },
+        "gender": {
+          "type": "string",
+          "example": "Male"
+        },
+        "phone": {
+          "type": "string",
+          "example": "+254700000000"
+        },
+        "email": {
+          "type": "string",
+          "example": "john.doe@example.com"
+        },
+        "address": {
+          "type": "string",
+          "example": "Nairobi, Kenya"
+        },
+        "emergencyContact": {
+          "type": "string",
+          "example": "+254711111111"
+        },
+        "diagnosis": {
+          "type": "string",
+          "example": "Malaria"
+        }
+      }
+    },
+    "Doctor": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "example": "Jane"
+        },
+        "lastName": {
+          "type": "string",
+          "example": "Smith"
+        },
+        "specialization": {
+          "type": "string",
+          "example": "Cardiology"
+        },
+        "phone": {
+          "type": "string",
+          "example": "+254722222222"
+        },
+        "email": {
+          "type": "string",
+          "example": "jane.smith@example.com"
+        },
+        "department": {
+          "type": "string",
+          "example": "Cardiology"
+        },
+        "licenseNumber": {
+          "type": "string",
+          "example": "MED-12345"
+        }
+      }
+    },
+    "Appointment": {
+      "type": "object",
+      "properties": {
+        "patientId": {
+          "type": "string",
+          "example": "507f1f77bcf86cd799439011"
+        },
+        "doctorId": {
+          "type": "string",
+          "example": "507f191e810c19729de860ea"
+        },
+        "appointmentDate": {
+          "type": "string",
+          "example": "2026-10-05"
+        },
+        "appointmentTime": {
+          "type": "string",
+          "example": "10:30"
+        },
+        "reason": {
+          "type": "string",
+          "example": "Routine medical consultation"
+        },
+        "status": {
+          "type": "string",
+          "example": "Scheduled"
+        },
+        "notes": {
+          "type": "string",
+          "example": "Patient should arrive 15 minutes early"
+        }
+      }
+    },
+    "MedicalRecord": {
+      "type": "object",
+      "properties": {
+        "patientId": {
+          "type": "string",
+          "example": "507f1f77bcf86cd799439011"
+        },
+        "doctorId": {
+          "type": "string",
+          "example": "507f191e810c19729de860ea"
+        },
+        "diagnosis": {
+          "type": "string",
+          "example": "Malaria"
+        },
+        "symptoms": {
+          "type": "string",
+          "example": "Fever, headache, and body weakness"
+        },
+        "treatment": {
+          "type": "string",
+          "example": "Antimalarial treatment and fluids"
+        },
+        "medications": {
+          "type": "string",
+          "example": "Artemether-Lumefantrine"
+        },
+        "notes": {
+          "type": "string",
+          "example": "Patient advised to return for follow-up"
+        },
+        "recordDate": {
+          "type": "string",
+          "example": "2026-09-30"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "googleId": {
+          "type": "string",
+          "example": "123456789"
+        },
+        "displayName": {
+          "type": "string",
+          "example": "John Doe"
+        },
+        "email": {
+          "type": "string",
+          "example": "john.doe@gmail.com"
+        },
+        "photo": {
+          "type": "string",
+          "example": "https://example.com/photo.jpg"
+        }
+      }
+    }
+  }
+}
