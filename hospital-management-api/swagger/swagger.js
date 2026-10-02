@@ -22,7 +22,7 @@ const doc = {
             description: 'Local Development Server'
         },
         {
-            url: 'https://hospital-management-api-jp2e.onrender.com',
+            url: 'https://final-projectcse341.onrender.com',
             description: 'Production Server'
         }
     ],
