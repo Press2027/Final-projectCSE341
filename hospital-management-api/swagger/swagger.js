@@ -1,14 +1,14 @@
+
 const swaggerAutogen = require('swagger-autogen')({
     openapi: '3.0.0'
 });
 
 const doc = {
-
     info: {
         title: 'Hospital Management API',
         version: '1.0.0',
         description:
-            'A RESTful API for managing patients, doctors, appointments, medical records, and user authentication. Developed as part of the CSE 341 Final Project.',
+            'A RESTful API for managing patients, doctors, appointments, medical records, and GitHub OAuth authentication. Developed as part of the CSE 341 Final Project.',
         contact: {
             name: 'Hospital Management API Development Team'
         },
@@ -29,60 +29,46 @@ const doc = {
     ],
 
     tags: [
-        // ============================================================
-        // PATIENTS
-        // ============================================================
+       {
+            name: 'Authorization',
+            description:
+                'GitHub OAuth authorization, user authentication, session status, user profile, and logout endpoints.'
+},
         {
             name: 'Patients',
             description:
                 'Patient management endpoints for creating, retrieving, updating, and deleting patient records.'
         },
-
-        // ============================================================
-        // DOCTORS
-        // ============================================================
         {
             name: 'Doctors',
             description:
                 'Doctor management endpoints for managing doctors and their professional information.'
         },
-
-        // ============================================================
-        // APPOINTMENTS
-        // ============================================================
         {
             name: 'Appointments',
             description:
                 'Appointment management endpoints for scheduling and managing patient appointments.'
         },
-
-        // ============================================================
-        // MEDICAL RECORDS
-        // ============================================================
         {
             name: 'Medical Records',
             description:
                 'Medical record endpoints for managing diagnoses, symptoms, treatments, medications, and patient medical history.'
         },
-
-        // ============================================================
-        // AUTHENTICATION
-        // ============================================================
         {
-            name: 'Authentication',
+            name: 'Testing',
             description:
-                'Authentication and user account management endpoints.'
+                'Endpoints related to automated API test status and verification.'
         }
     ],
 
-    securityDefinitions: {
-        googleOAuth: {
-            type: 'oauth2',
-            authorizationUrl: '/auth/google',
-            flow: 'implicit',
-            scopes: {
-                profile: 'Access the user profile',
-                email: 'Access the user email address'
+    components: {
+        securitySchemes: {
+            cookieAuth: {
+                type: 'apiKey',
+                in: 'cookie',
+                name: 'connect.sid',
+                description:
+                    'Express session cookie created after successful GitHub OAuth authentication.'
             }
         }
     },
@@ -258,8 +244,7 @@ const doc = {
                 notes: {
                     type: 'string',
                     description: 'Additional appointment notes',
-                    example:
-                        'Patient should arrive 15 minutes early'
+                    example: 'Patient should arrive 15 minutes early'
                 }
             }
         },
@@ -294,26 +279,22 @@ const doc = {
                 symptoms: {
                     type: 'string',
                     description: 'Patient symptoms',
-                    example:
-                        'Fever, headache, and body weakness'
+                    example: 'Fever, headache, and body weakness'
                 },
                 treatment: {
                     type: 'string',
                     description: 'Recommended treatment',
-                    example:
-                        'Antimalarial treatment and fluids'
+                    example: 'Antimalarial treatment and fluids'
                 },
                 medications: {
                     type: 'string',
                     description: 'Prescribed medications',
-                    example:
-                        'Artemether-Lumefantrine'
+                    example: 'Artemether-Lumefantrine'
                 },
                 notes: {
                     type: 'string',
                     description: 'Additional medical notes',
-                    example:
-                        'Patient advised to return for follow-up'
+                    example: 'Patient advised to return for follow-up'
                 },
                 recordDate: {
                     type: 'string',
@@ -330,10 +311,15 @@ const doc = {
         User: {
             type: 'object',
             properties: {
-                googleId: {
+                githubId: {
                     type: 'string',
-                    description: 'Google account identifier',
+                    description: 'GitHub account identifier',
                     example: '123456789'
+                },
+                username: {
+                    type: 'string',
+                    description: 'GitHub username',
+                    example: 'john-doe'
                 },
                 displayName: {
                     type: 'string',
@@ -344,14 +330,19 @@ const doc = {
                     type: 'string',
                     format: 'email',
                     description: 'User email address',
-                    example: 'john.doe@gmail.com'
+                    example: 'john.doe@example.com'
                 },
-                photo: {
+                profileUrl: {
                     type: 'string',
                     format: 'uri',
-                    description: 'User profile photo URL',
-                    example:
-                        'https://example.com/photo.jpg'
+                    description: 'GitHub profile URL',
+                    example: 'https://github.com/john-doe'
+                },
+                avatarUrl: {
+                    type: 'string',
+                    format: 'uri',
+                    description: 'GitHub profile image URL',
+                    example: 'https://avatars.githubusercontent.com/u/123456789'
                 }
             }
         },
@@ -376,10 +367,6 @@ const doc = {
     },
 
     responses: {
-
-        // ============================================================
-        // ERROR RESPONSES
-        // ============================================================
         BadRequest: {
             description:
                 'The request contains invalid or missing data.'
@@ -387,7 +374,7 @@ const doc = {
 
         Unauthorized: {
             description:
-                'Authentication is required or the provided credentials are invalid.'
+                'Authentication is required or the user is not logged in.'
         },
 
         Forbidden: {
@@ -409,14 +396,20 @@ const doc = {
 
 const path = require('path');
 
-const outputFile = path.join(__dirname, '..', 'swagger-output.json');
+const outputFile = path.join(
+    __dirname,
+    '..',
+    'swagger-output.json'
+);
 
 const endpointsFiles = [
     './server.js',
+    './routes/authRoutes.js',
     './routes/patientsRoutes.js',
     './routes/doctorsRoutes.js',
     './routes/appointmentsRoutes.js',
-    './routes/medicalRecordsRoutes.js'
+    './routes/medicalRecordsRoutes.js',
+    './routes/testRoutes.js'
 ];
 
 swaggerAutogen(outputFile, endpointsFiles, doc);

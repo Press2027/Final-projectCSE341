@@ -3,7 +3,7 @@
   "info": {
     "title": "Hospital Management API",
     "version": "1.0.0",
-    "description": "A RESTful API for managing patients, doctors, appointments, medical records, and user authentication. Developed as part of the CSE 341 Final Project.",
+    "description": "A RESTful API for managing patients, doctors, appointments, medical records, and GitHub OAuth authentication. Developed as part of the CSE 341 Final Project.",
     "contact": {
       "name": "Hospital Management API Development Team"
     },
@@ -23,6 +23,10 @@
   ],
   "tags": [
     {
+      "name": "Authorization",
+      "description": "GitHub OAuth authorization, user authentication, session status, user profile, and logout endpoints."
+    },
+    {
       "name": "Patients",
       "description": "Patient management endpoints for creating, retrieving, updating, and deleting patient records."
     },
@@ -39,20 +43,59 @@
       "description": "Medical record endpoints for managing diagnoses, symptoms, treatments, medications, and patient medical history."
     },
     {
-      "name": "Authentication",
-      "description": "Authentication and user account management endpoints."
+      "name": "Testing",
+      "description": "Endpoints related to automated API test status and verification."
     }
   ],
   "paths": {
     "/": {
       "get": {
         "tags": [
-          "Medical Records"
+          "Testing"
         ],
-        "description": "",
+        "summary": "Check automated test status",
+        "description": "Reports the most recent test status recorded during deployment. This endpoint does not execute Jest.",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Test status retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "See deployment test results"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Automated tests are run during deployment"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "See deployment test results"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Automated tests are run during deployment"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
           },
           "500": {
             "description": "Internal Server Error"
@@ -71,10 +114,18 @@
           "400": {
             "description": "Bad Request"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "500": {
             "description": "Internal Server Error"
           }
         },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -157,6 +208,93 @@
         }
       }
     },
+    "/auth/github": {
+      "get": {
+        "tags": [
+          "Authorization"
+        ],
+        "summary": "Login with GitHub",
+        "description": "Redirects the user to GitHub for OAuth authorization.",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/auth/github/callback": {
+      "get": {
+        "tags": [
+          "Authorization"
+        ],
+        "summary": "GitHub OAuth callback",
+        "description": "Handles the callback from GitHub after successful authorization.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/auth/status": {
+      "get": {
+        "tags": [
+          "Authorization"
+        ],
+        "summary": "Check authentication status",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "tags": [
+          "Authorization"
+        ],
+        "summary": "Get current authenticated user",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "tags": [
+          "Authorization"
+        ],
+        "summary": "Logout current user",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/auth/login-failed": {
+      "get": {
+        "tags": [
+          "Authorization"
+        ],
+        "summary": "Authentication failure response",
+        "description": "",
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/patients/": {
       "get": {
         "tags": [
@@ -184,10 +322,18 @@
           "400": {
             "description": "Bad Request"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "500": {
             "description": "Internal Server Error"
           }
         },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -281,6 +427,9 @@
           "400": {
             "description": "Bad Request"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Not Found"
           },
@@ -288,6 +437,11 @@
             "description": "Internal Server Error"
           }
         },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -349,13 +503,21 @@
           "400": {
             "description": "Bad Request"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Not Found"
           },
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
       }
     },
     "/doctors/": {
@@ -385,10 +547,18 @@
           "400": {
             "description": "Bad Request"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "500": {
             "description": "Internal Server Error"
           }
         },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -476,6 +646,9 @@
           "400": {
             "description": "Bad Request"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Not Found"
           },
@@ -483,6 +656,11 @@
             "description": "Internal Server Error"
           }
         },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -538,13 +716,21 @@
           "400": {
             "description": "Bad Request"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Not Found"
           },
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
       }
     },
     "/appointments/": {
@@ -574,10 +760,18 @@
           "400": {
             "description": "Bad Request"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "500": {
             "description": "Internal Server Error"
           }
         },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -665,6 +859,9 @@
           "400": {
             "description": "Bad Request"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Not Found"
           },
@@ -672,6 +869,11 @@
             "description": "Internal Server Error"
           }
         },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -727,13 +929,21 @@
           "400": {
             "description": "Bad Request"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Not Found"
           },
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
       }
     },
     "/medical-records/": {
@@ -763,10 +973,18 @@
           "400": {
             "description": "Bad Request"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "500": {
             "description": "Internal Server Error"
           }
         },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -857,6 +1075,9 @@
           "400": {
             "description": "Bad Request"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Not Found"
           },
@@ -864,6 +1085,11 @@
             "description": "Internal Server Error"
           }
         },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -922,11 +1148,158 @@
           "400": {
             "description": "Bad Request"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Not Found"
           },
           "500": {
             "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/test-status/": {
+      "get": {
+        "tags": [
+          "Testing"
+        ],
+        "summary": "Check automated test status",
+        "description": "Reports the most recent test status recorded during deployment. This endpoint does not execute Jest.",
+        "responses": {
+          "200": {
+            "description": "Test status retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "See deployment test results"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Automated tests are run during deployment"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "See deployment test results"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Automated tests are run during deployment"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/github": {
+      "get": {
+        "tags": [
+          "Authorization"
+        ],
+        "summary": "Login with GitHub",
+        "description": "Redirects the user to GitHub for OAuth authorization.",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/github/callback": {
+      "get": {
+        "tags": [
+          "Authorization"
+        ],
+        "summary": "GitHub OAuth callback",
+        "description": "Handles the callback from GitHub after successful authorization.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/status": {
+      "get": {
+        "tags": [
+          "Authorization"
+        ],
+        "summary": "Check authentication status",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/me": {
+      "get": {
+        "tags": [
+          "Authorization"
+        ],
+        "summary": "Get current authenticated user",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/logout": {
+      "get": {
+        "tags": [
+          "Authorization"
+        ],
+        "summary": "Logout current user",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/login-failed": {
+      "get": {
+        "tags": [
+          "Authorization"
+        ],
+        "summary": "Authentication failure response",
+        "description": "",
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
@@ -984,6 +1357,9 @@
           "400": {
             "description": "Bad Request"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Not Found"
           },
@@ -991,6 +1367,11 @@
             "description": "Internal Server Error"
           }
         },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1094,17 +1475,33 @@
           "400": {
             "description": "Bad Request"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Not Found"
           },
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
       }
     }
   },
   "components": {
+    "securitySchemes": {
+      "cookieAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "connect.sid",
+        "description": "Express session cookie created after successful GitHub OAuth authentication."
+      }
+    },
     "schemas": {
       "Patient": {
         "type": "object",
@@ -1293,6 +1690,9 @@
               }
             }
           }
+        },
+        "xml": {
+          "name": "Patient"
         }
       },
       "Doctor": {
@@ -1443,6 +1843,9 @@
               }
             }
           }
+        },
+        "xml": {
+          "name": "Doctor"
         }
       },
       "Appointment": {
@@ -1605,6 +2008,9 @@
               }
             }
           }
+        },
+        "xml": {
+          "name": "Appointment"
         }
       },
       "MedicalRecord": {
@@ -1771,6 +2177,9 @@
               }
             }
           }
+        },
+        "xml": {
+          "name": "MedicalRecord"
         }
       },
       "User": {
@@ -1783,7 +2192,7 @@
           "properties": {
             "type": "object",
             "properties": {
-              "googleId": {
+              "githubId": {
                 "type": "object",
                 "properties": {
                   "type": {
@@ -1792,11 +2201,28 @@
                   },
                   "description": {
                     "type": "string",
-                    "example": "Google account identifier"
+                    "example": "GitHub account identifier"
                   },
                   "example": {
                     "type": "string",
                     "example": "123456789"
+                  }
+                }
+              },
+              "username": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "string"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "GitHub username"
+                  },
+                  "example": {
+                    "type": "string",
+                    "example": "john-doe"
                   }
                 }
               },
@@ -1834,11 +2260,11 @@
                   },
                   "example": {
                     "type": "string",
-                    "example": "john.doe@gmail.com"
+                    "example": "john.doe@example.com"
                   }
                 }
               },
-              "photo": {
+              "profileUrl": {
                 "type": "object",
                 "properties": {
                   "type": {
@@ -1851,16 +2277,40 @@
                   },
                   "description": {
                     "type": "string",
-                    "example": "User profile photo URL"
+                    "example": "GitHub profile URL"
                   },
                   "example": {
                     "type": "string",
-                    "example": "https://example.com/photo.jpg"
+                    "example": "https://github.com/john-doe"
+                  }
+                }
+              },
+              "avatarUrl": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "string"
+                  },
+                  "format": {
+                    "type": "string",
+                    "example": "uri"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "GitHub profile image URL"
+                  },
+                  "example": {
+                    "type": "string",
+                    "example": "https://avatars.githubusercontent.com/u/123456789"
                   }
                 }
               }
             }
           }
+        },
+        "xml": {
+          "name": "User"
         }
       },
       "Error": {
@@ -1901,17 +2351,9 @@
               }
             }
           }
-        }
-      }
-    },
-    "securitySchemes": {
-      "googleOAuth": {
-        "type": "oauth2",
-        "authorizationUrl": "/auth/google",
-        "flow": "implicit",
-        "scopes": {
-          "profile": "Access the user profile",
-          "email": "Access the user email address"
+        },
+        "xml": {
+          "name": "Error"
         }
       }
     }
@@ -1921,7 +2363,7 @@
       "description": "The request contains invalid or missing data."
     },
     "Unauthorized": {
-      "description": "Authentication is required or the provided credentials are invalid."
+      "description": "Authentication is required or the user is not logged in."
     },
     "Forbidden": {
       "description": "The authenticated user does not have permission to perform this operation."

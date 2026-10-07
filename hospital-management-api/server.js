@@ -6,6 +6,11 @@ require('dotenv').config();
 
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
+const session = require('express-session');
+const { MongoStore } = require('connect-mongo');
+const passport = require('passport');
+
+const testRoutes = require('./routes/testRoutes');
 
 const { initDb } = require('./data/database');
 
@@ -13,6 +18,9 @@ const patientsRoutes = require('./routes/patientsRoutes');
 const doctorsRoutes = require('./routes/doctorsRoutes');
 const appointmentsRoutes = require('./routes/appointmentsRoutes');
 const medicalRecordsRoutes = require('./routes/medicalRecordsRoutes');
+const authRoutes = require('./routes/authRoutes');
+
+require('./config/passport');
 
 const swaggerDocument = require('./swagger-output.json');
 
@@ -28,6 +36,39 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 // ==========================================
+// SESSION CONFIGURATION
+// ==========================================
+
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false,
+
+        store: MongoStore.create({
+            mongoUrl: process.env.MONGODB_URI,
+            collectionName: 'sessions'
+        }),
+
+        cookie: {
+            maxAge: 1000 * 60 * 60 * 24,
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production'
+                ? 'none'
+                : 'lax'
+        }
+    })
+);
+
+// ==========================================
+// PASSPORT
+// ==========================================
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// ==========================================
 // SWAGGER DOCUMENTATION
 // ==========================================
 
@@ -38,6 +79,12 @@ app.use(
 );
 
 // ==========================================
+// AUTHENTICATION ROUTES
+// ==========================================
+
+app.use('/auth', authRoutes);
+
+// ==========================================
 // API ROUTES
 // ==========================================
 
@@ -45,6 +92,7 @@ app.use('/patients', patientsRoutes);
 app.use('/doctors', doctorsRoutes);
 app.use('/appointments', appointmentsRoutes);
 app.use('/medical-records', medicalRecordsRoutes);
+app.use('/test-status', testRoutes);
 
 // ==========================================
 // HOME ROUTE
@@ -54,7 +102,8 @@ app.get('/', (req, res) => {
     res.status(200).json({
         message: 'Hospital Management API is running',
         status: 'success',
-        database: 'MongoDB'
+        database: 'MongoDB',
+        authentication: 'GitHub OAuth'
     });
 });
 
@@ -138,6 +187,7 @@ async function startServer() {
             console.log(
                 `Swagger: http://localhost:${PORT}/api-docs`
             );
+            console.log('Authentication: GitHub OAuth');
             console.log('MongoDB: Connected');
             console.log('======================================');
         });
