@@ -75,7 +75,11 @@ app.use(passport.session());
 app.use(
     '/api-docs',
     swaggerUi.serve,
-    swaggerUi.setup(swaggerDocument)
+    swaggerUi.setup(swaggerDocument, {
+        swaggerOptions: {
+            withCredentials: true
+        }
+    })
 );
 
 // ==========================================
