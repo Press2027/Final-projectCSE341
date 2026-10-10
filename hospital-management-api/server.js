@@ -26,6 +26,8 @@ const swaggerDocument = require('./swagger-output.json');
 
 const app = express();
 
+// Required for secure session cookies behind Render's proxy.
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3000;
 
 // ==========================================
