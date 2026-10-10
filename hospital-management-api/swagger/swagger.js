@@ -402,9 +402,9 @@ const outputFile = path.join(
     'swagger-output.json'
 );
 
+
 const endpointsFiles = [
     './server.js',
-    './routes/authRoutes.js',
     './routes/patientsRoutes.js',
     './routes/doctorsRoutes.js',
     './routes/appointmentsRoutes.js',
@@ -412,4 +412,27 @@ const endpointsFiles = [
     './routes/testRoutes.js'
 ];
 
-swaggerAutogen(outputFile, endpointsFiles, doc);
+
+swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {
+    const fs = require('fs');
+
+    const swaggerDocument = JSON.parse(
+        fs.readFileSync(outputFile, 'utf8')
+    );
+
+    if (swaggerDocument.paths['/{id}']) {
+        delete swaggerDocument.paths['/{id}'];
+        console.log('Removed unwanted Swagger path: /{id}');
+    }
+
+    fs.writeFileSync(
+        outputFile,
+        JSON.stringify(swaggerDocument, null, 2)
+    );
+
+    console.log('Swagger documentation generated successfully.');
+}).catch((error) => {
+    console.error('Failed to generate Swagger documentation:', error);
+    process.exitCode = 1;
+});
+

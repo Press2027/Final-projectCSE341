@@ -75,23 +75,28 @@ passport.serializeUser((user, done) => {
 });
 
 // Retrieve user from MongoDB session
+
 passport.deserializeUser(async (id, done) => {
     try {
         const db = getDb();
 
+        if (!ObjectId.isValid(id)) {
+            return done(null, false);
+        }
+
         const user = await db.collection('users').findOne({
-            _id: new require('mongodb').ObjectId(id)
+            _id: new ObjectId(id)
         });
 
         if (!user) {
             return done(null, false);
         }
 
-        done(null, user);
-
+        return done(null, user);
     } catch (error) {
-        done(error, null);
+        return done(error);
     }
 });
+
 
 module.exports = passport;

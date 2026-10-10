@@ -27,33 +27,53 @@ router.get(
     }
 );
 
-// GitHub OAuth Callback
+
+ // GitHub OAuth Callback
 router.get(
     '/github/callback',
     (req, res, next) => {
-        /* #swagger.tags = ['Authorization'] */
-        /* #swagger.summary = 'GitHub OAuth callback' */
-        /* #swagger.description = 'Handles the callback from GitHub after successful authorization.' */
         passport.authenticate(
             'github',
             {
                 failureRedirect: '/auth/login-failed'
+            },
+            (err, user, info) => {
+                if (err) {
+                    return next(err);
+                }
+
+                if (!user) {
+                    return res.redirect('/auth/login-failed');
+                }
+
+                req.logIn(user, (loginError) => {
+                    if (loginError) {
+                        return next(loginError);
+                    }
+
+                    // Wait for session to be saved before responding
+                    req.session.save((sessionError) => {
+                        if (sessionError) {
+                            return next(sessionError);
+                        }
+
+                        return res.status(200).json({
+                            message: 'GitHub authentication successful',
+                            user: {
+                                id: user._id,
+                                githubId: user.githubId,
+                                username: user.username,
+                                displayName: user.displayName,
+                                email: user.email
+                            }
+                        });
+                    });
+                });
             }
         )(req, res, next);
-    },
-    (req, res) => {
-        res.status(200).json({
-            message: 'GitHub authentication successful',
-            user: {
-                id: req.user._id,
-                githubId: req.user.githubId,
-                username: req.user.username,
-                displayName: req.user.displayName,
-                email: req.user.email
-            }
-        });
     }
 );
+
 
 // Authentication Status
 router.get('/status', (req, res) => {
